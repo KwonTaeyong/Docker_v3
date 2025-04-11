@@ -1,0 +1,21 @@
+{
+  auto_https off
+  http_port 80
+}
+
+http://customer1.localhost {
+  root * /srv/frontend/customer1
+  file_server
+
+  handle /api/* {
+    reverse_proxy backend:4000
+  }
+}
+
+http://customer2.localhost {
+  root * /srv/frontend/customer2
+  file_server
+  handle /api/* {
+    reverse_proxy backend:4000
+  }
+}

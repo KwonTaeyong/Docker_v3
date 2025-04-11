@@ -1,0 +1,43 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "4000:4000"
+    networks:
+      - internal
+
+  frontend-customer1:
+    build:
+      context: ./frontend-customer1
+    networks:
+      - internal
+
+  frontend-customer2:
+    build:
+      context: ./frontend-customer2
+    networks:
+      - internal    
+
+  caddy:
+    image: caddy:2
+    container_name: caddy
+    ports:
+      - "80:80"
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - ./frontend-customer1/dist:/srv/frontend/customer1  # 여기!
+      - ./frontend-customer2/dist:/srv/frontend/customer2  # 여기!
+    depends_on:
+      - frontend-customer1
+      - frontend-customer2
+    networks:
+      - internal
+
+networks:
+  internal:
+
+volumes:
+  frontend_build:
