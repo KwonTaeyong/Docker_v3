@@ -6,6 +6,8 @@ services:
       context: ./backend
     ports:
       - "4000:4000"
+    volumes:
+      - ./backend/requests:/app/requests
     networks:
       - internal
 
